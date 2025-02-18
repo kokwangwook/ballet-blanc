@@ -1,0 +1,254 @@
+/* 탭 스타일 */
+.tab-button {
+    position: relative;
+    cursor: pointer;
+}
+
+.tab-button.active {
+    color: #3B82F6;
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #3B82F6;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 32rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* 카드 스타일 */
+.student-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    transition: all 0.2s;
+}
+
+.student-card:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 시간대 카드 스타일 */
+.time-slot-card {
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.time-slot-card h2 {
+    color: #1f2937;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* 상태 배지 스타일 */
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.status-badge.waiting {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.status-badge.boarded {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
+/* 버튼 스타일 */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #3B82F6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2563EB;
+}
+
+.btn-danger {
+    background-color: #EF4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #DC2626;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+th {
+    font-weight: 600;
+    background-color: #F9FAFB;
+}
+
+/* 입력 필드 스타일 */
+.input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.375rem;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 알림 스타일 */
+.alert {
+    padding: 1rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.alert-danger {
+    background-color: #FEE2E2;
+    border: 1px solid #FCA5A5;
+    color: #991B1B;
+}
+
+/* 검색 입력창 스타일 */
+#studentSearch {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+#studentSearch:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 전체 학생 목록 테이블 스타일 */
+#allStudentsList table {
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#allStudentsList th {
+    background-color: #F3F4F6;
+    padding: 1rem 0.75rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+#allStudentsList td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+#allStudentsList tr:hover {
+    background-color: #F9FAFB;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .modal-content {
+        margin: 1rem;
+        max-width: none;
+    }
+
+    .tab-button {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    #allStudentsList {
+        overflow-x: auto;
+    }
+}
+
+/* 모바일 화면 최적화 */
+@media (max-width: 640px) {
+    .student-card {
+        padding: 0.75rem;
+    }
+
+    .time-slot-card h2 {
+        font-size: 1rem;
+    }
+
+    th, td {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .btn {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+    }
+}
