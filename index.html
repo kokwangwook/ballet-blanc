@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>발레블랑 학생 관리 시스템</title>
+    <title>발레블랑 학생 관리</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <!-- 헤더 영역 -->
+            <!-- 헤더 -->
             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-2xl font-bold">발레블랑 학생 관리</h1>
+                <h1 class="text-2xl font-bold">발레블랑 학생 관리 시스템</h1>
                 <div>
                     <button onclick="showAddStudentModal()" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">
                         새 학생 등록
@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <!-- 탭 영역 -->
+            <!-- 메뉴 탭 -->
             <div class="mb-6">
                 <div class="flex border-b border-gray-200">
                     <button onclick="showTab('timeTable')" class="tab-button active px-4 py-2" data-tab="timeTable">
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <!-- 콘텐츠 영역 -->
+            <!-- 컨텐츠 영역 -->
             <div id="timeTable" class="tab-content active">
                 <div id="studentsList"></div>
             </div>
@@ -137,6 +137,11 @@
         </div>
     </div>
 
+    <!-- 나머지 모달들... -->
+
+    <script src="js/script.js"></script>
+</body>
+</html>
     <!-- 일정 변경 모달 -->
     <div id="scheduleChangeModal" class="modal">
         <div class="modal-content">

@@ -35,8 +35,8 @@ let students = [
         location: '엔젤음악학원(루벤하임앞)',
         number: '72',
         timeSlot: '14:30'
-    },
-    // ... 나머지 학생 데이터도 동일하게 복사
+    }
+    // 여기에 더 많은 학생 데이터를 추가할 수 있습니다
 ];
 
 // 일정 변경 데이터
@@ -44,6 +44,48 @@ let scheduleChanges = [];
 
 // 퇴원 학생 데이터
 let withdrawals = [];
+
+// 기본 함수들
+function showTab(tabId) {
+    // 모든 탭 버튼에서 active 클래스 제거
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    // 선택된 탭 버튼에 active 클래스 추가
+    document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    
+    // 모든 탭 컨텐츠에서 active 클래스 제거
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // 선택된 탭 컨텐츠에 active 클래스 추가
+    document.getElementById(tabId).classList.add('active');
+    
+    // 탭에 따른 컨텐츠 렌더링
+    if (tabId === 'timeTable') {
+        renderStudents();
+    } else if (tabId === 'dayTable') {
+        renderDayStudents();
+    } else if (tabId === 'allStudents') {
+        renderAllStudents();
+    } else if (tabId === 'withdrawals') {
+        renderWithdrawals();
+    } else if (tabId === 'schedule') {
+        renderScheduleChanges();
+    }
+}
+
+function showModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.add('show');
+}
+
+function hideModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.remove('show');
+}
 
 // 학생 관리 함수들
 function addStudent(student) {
@@ -83,103 +125,6 @@ function getAllStudents() {
     return [...students];
 }
 
-// 일정 변경 관리 함수들
-function addScheduleChange(change) {
-    scheduleChanges.push({
-        id: Date.now(),
-        ...change
-    });
-}
-
-function getAllScheduleChanges() {
-    return [...scheduleChanges];
-}
-
-// 퇴원 관리 함수들
-function addWithdrawal(student, reason, date) {
-    withdrawals.push({
-        ...student,
-        withdrawalReason: reason,
-        withdrawalDate: date,
-        originalId: student.id,
-        id: Date.now()
-    });
-}
-
-function restoreStudent(withdrawalId) {
-    const index = withdrawals.findIndex(w => w.id === withdrawalId);
-    if (index !== -1) {
-        const student = withdrawals[index];
-        withdrawals.splice(index, 1);
-        return {
-            ...student,
-            id: student.originalId,
-            withdrawalReason: undefined,
-            withdrawalDate: undefined,
-            originalId: undefined
-        };
-    }
-    return null;
-}
-
-function getAllWithdrawals() {
-    return [...withdrawals];
-}
-
-// UI 관련 함수들
-function showTab(tabId) {
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('active');
-    });
-    
-    document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-    
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-    });
-    
-    document.getElementById(tabId).classList.add('active');
-    
-    if (tabId === 'timeTable') {
-        renderStudents();
-    } else if (tabId === 'dayTable') {
-        renderDayStudents();
-    } else if (tabId === 'allStudents') {
-        renderAllStudents();
-    } else if (tabId === 'withdrawals') {
-        renderWithdrawals();
-    } else if (tabId === 'schedule') {
-        renderScheduleChanges();
-    }
-}
-
-function showModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.classList.add('show');
-}
-
-function hideModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.classList.remove('show');
-}
-
-function showAddStudentModal() {
-    const form = document.getElementById('addStudentForm');
-    form.reset();
-    showModal('addStudentModal');
-}
-
-function showScheduleChangeModal() {
-    const select = document.querySelector('[name="studentId"]');
-    select.innerHTML = getAllStudents().map(student => 
-        `<option value="${student.id}">${student.name}</option>`
-    ).join('');
-    
-    const form = document.getElementById('scheduleChangeForm');
-    form.reset();
-    showModal('scheduleChangeModal');
-}
-
 // 렌더링 함수들
 function renderStudents() {
     const container = document.getElementById('studentsList');
@@ -188,33 +133,26 @@ function renderStudents() {
         if (slotStudents.length === 0) return '';
 
         return `
-            <div class="time-slot-card mb-6">
-                <h2 class="text-xl font-bold mb-4 bg-gray-100 p-3 rounded">
-                    ${slot.title}
-                </h2>
+            <div class="time-slot-card">
+                <h2 class="text-xl font-bold">${slot.title}</h2>
                 <div class="grid gap-4">
                     ${slotStudents.map(student => `
                         <div class="student-card">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <div class="flex items-center gap-2">
-                                        <h3 class="text-lg font-medium">${student.name}</h3>
-                                        ${student.number ? `<span class="text-sm text-gray-500">#${student.number}</span>` : ''}
-                                    </div>
-                                    ${student.contact ? `<p class="text-sm text-gray-600">연락처: ${student.contact}
-                                    </p>` : ''}
+                                    <h3 class="text-lg font-medium">${student.name}</h3>
+                                    ${student.number ? `<span class="text-sm text-gray-500">#${student.number}</span>` : ''}
+                                    ${student.contact ? `<p class="text-sm text-gray-600">연락처: ${student.contact}</p>` : ''}
                                     ${student.location ? `<p class="text-sm text-gray-600">탑승 위치: ${student.location}</p>` : ''}
-                                    ${student.days && student.days.length > 0 ? 
-                                        `<p class="text-sm text-gray-600">등원 요일: ${student.days.join(', ')}</p>` : ''}
-                                    ${student.shortPhone ? `<p class="text-sm text-gray-600">단축번호: ${student.shortPhone}</p>` : ''}
+                                    ${student.days ? `<p class="text-sm text-gray-600">등원 요일: ${student.days.join(', ')}</p>` : ''}
                                 </div>
                                 <div class="flex gap-2">
                                     <button onclick="editStudent(${student.id})" 
-                                        class="text-sm px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                        class="text-sm px-3 py-1 bg-blue-500 text-white rounded">
                                         수정
                                     </button>
                                     <button onclick="showWithdrawalModal(${student.id})" 
-                                        class="text-sm px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                                        class="text-sm px-3 py-1 bg-yellow-500 text-white rounded">
                                         퇴원
                                     </button>
                                 </div>
@@ -234,31 +172,26 @@ function renderDayStudents() {
         if (dayStudents.length === 0) return '';
 
         return `
-            <div class="time-slot-card mb-6">
-                <h2 class="text-xl font-bold mb-4 bg-gray-100 p-3 rounded">
-                    ${day}요일
-                </h2>
+            <div class="time-slot-card">
+                <h2 class="text-xl font-bold">${day}요일</h2>
                 <div class="grid gap-4">
                     ${dayStudents.map(student => `
                         <div class="student-card">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <div class="flex items-center gap-2">
-                                        <h3 class="text-lg font-medium">${student.name}</h3>
-                                        ${student.number ? `<span class="text-sm text-gray-500">#${student.number}</span>` : ''}
-                                    </div>
+                                    <h3 class="text-lg font-medium">${student.name}</h3>
+                                    ${student.number ? `<span class="text-sm text-gray-500">#${student.number}</span>` : ''}
                                     ${student.contact ? `<p class="text-sm text-gray-600">연락처: ${student.contact}</p>` : ''}
                                     ${student.location ? `<p class="text-sm text-gray-600">탑승 위치: ${student.location}</p>` : ''}
                                     <p class="text-sm text-gray-600">등원 시간: ${formatTimeSlot(student.timeSlot)}</p>
-                                    ${student.shortPhone ? `<p class="text-sm text-gray-600">단축번호: ${student.shortPhone}</p>` : ''}
                                 </div>
                                 <div class="flex gap-2">
                                     <button onclick="editStudent(${student.id})" 
-                                        class="text-sm px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                        class="text-sm px-3 py-1 bg-blue-500 text-white rounded">
                                         수정
                                     </button>
                                     <button onclick="showWithdrawalModal(${student.id})" 
-                                        class="text-sm px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                                        class="text-sm px-3 py-1 bg-yellow-500 text-white rounded">
                                         퇴원
                                     </button>
                                 </div>
@@ -298,7 +231,6 @@ function renderAllStudents() {
                     <th class="p-3 text-left">탑승 위치</th>
                     <th class="p-3 text-left">시간대</th>
                     <th class="p-3 text-left">연락처</th>
-                    <th class="p-3 text-left">단축번호</th>
                     <th class="p-3 text-left">관리</th>
                 </tr>
             </thead>
@@ -311,15 +243,14 @@ function renderAllStudents() {
                         <td class="p-3">${student.location || '-'}</td>
                         <td class="p-3">${formatTimeSlot(student.timeSlot)}</td>
                         <td class="p-3">${student.contact || '-'}</td>
-                        <td class="p-3">${student.shortPhone || '-'}</td>
                         <td class="p-3">
                             <div class="flex gap-2">
                                 <button onclick="editStudent(${student.id})" 
-                                        class="px-3 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                        class="px-3 py-1 text-sm bg-blue-500 text-white rounded">
                                     수정
                                 </button>
                                 <button onclick="showWithdrawalModal(${student.id})" 
-                                        class="px-3 py-1 text-sm bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
+                                        class="px-3 py-1 text-sm bg-yellow-500 text-white rounded">
                                     퇴원
                                 </button>
                             </div>
@@ -332,62 +263,8 @@ function renderAllStudents() {
 
     container.innerHTML = searchHtml + tableHtml;
 }
-function renderWithdrawals() {
-    const container = document.getElementById('withdrawalsList');
-    container.innerHTML = `
-        <div class="mb-4">
-            <h2 class="text-xl font-bold">퇴원 학생 목록</h2>
-        </div>
-        <table class="w-full border-collapse">
-            <thead>
-                <tr class="border-b bg-gray-50">
-                    <th class="p-3 text-left">이름</th>
-                    <th class="p-3 text-left">퇴원일</th>
-                    <th class="p-3 text-left">퇴원사유</th>
-                    <th class="p-3 text-left">마지막 등원 시간</th>
-                    <th class="p-3 text-left">연락처</th>
-                    <th class="p-3 text-left">단축번호</th>
-                    <th class="p-3 text-left">관리</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${getAllWithdrawals().map(student => `
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-3">${student.name}</td>
-                        <td class="p-3">${student.withdrawalDate}</td>
-                        <td class="p-3">${student.withdrawalReason}</td>
-                        <td class="p-3">${formatTimeSlot(student.timeSlot)}</td>
-                        <td class="p-3">${student.contact || '-'}</td>
-                        <td class="p-3">${student.shortPhone || '-'}</td>
-                        <td class="p-3">
-                            <button onclick="restoreWithdrawalStudent(${student.id})" 
-                                    class="px-3 py-1 text-sm bg-green-500 text-white rounded-md hover:bg-green-600">
-                                재등록
-                            </button>
-                        </td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
-    `;
-}
 
-function renderScheduleChanges() {
-    const container = document.getElementById('scheduleList');
-    container.innerHTML = getAllScheduleChanges().map(change => {
-        const student = getStudentById(parseInt(change.studentId));
-        return `
-            <div class="student-card">
-                <h3 class="text-lg font-medium">${student ? student.name : '알 수 없음'}</h3>
-                <p class="text-sm text-gray-600">변경 유형: ${change.changeType === 'temporary' ? '임시 변경' : '정기 변경'}</p>
-                <p class="text-sm text-gray-600">변경 날짜: ${change.date}</p>
-                <p class="text-sm text-gray-600">변경 사유: ${change.reason}</p>
-            </div>
-        `;
-    }).join('');
-}
-
-// 이벤트 핸들러 함수들
+// 이벤트 핸들러들
 function handleAddStudent(event) {
     event.preventDefault();
     const form = event.target;
@@ -411,30 +288,12 @@ function handleAddStudent(event) {
     form.reset();
 }
 
-function handleAddScheduleChange(event) {
-    event.preventDefault();
-    const form = event.target;
-    
-    const newChange = {
-        studentId: form.studentId.value,
-        changeType: form.changeType.value,
-        date: form.date.value,
-        reason: form.reason.value
-    };
-    
-    addScheduleChange(newChange);
-    renderScheduleChanges();
-    hideModal('scheduleChangeModal');
-    form.reset();
-}
-
 function editStudent(studentId) {
     const student = getStudentById(studentId);
     if (!student) return;
     
     const form = document.getElementById('editStudentForm');
     
-    // 폼에 현재 학생 정보 채우기
     form.studentId.value = student.id;
     form.name.value = student.name;
     form.contact.value = student.contact || '';
@@ -442,7 +301,6 @@ function editStudent(studentId) {
     form.shortPhone.value = student.shortPhone || '';
     form.timeSlot.value = student.timeSlot;
     
-    // 요일 체크박스 설정
     Array.from(form.days).forEach(checkbox => {
         checkbox.checked = student.days && student.days.includes(checkbox.value);
     });
@@ -474,27 +332,9 @@ function handleEditStudent(event) {
     renderDayStudents();
     renderAllStudents();
     hideModal('editStudentModal');
-    alert('학생 정보가 수정되었습니다.');
 }
 
-function handleWithdrawal(event) {
-    event.preventDefault();
-    const form = event.target;
-    const studentId = parseInt(form.studentId.value);
-    const student = getStudentById(studentId);
-    
-    if (student) {
-        addWithdrawal(student, form.reason.value, form.date.value);
-        deleteStudent(studentId);
-        renderStudents();
-        renderDayStudents();
-        renderAllStudents();
-        renderWithdrawals();
-        hideModal('withdrawalModal');
-        alert(`${student.name} 학생이 퇴원 처리되었습니다.`);
-    }
-}
-
+// 유틸리티 함수들
 function formatTimeSlot(timeSlot) {
     const timeSlotMap = {
         '14:30': '2시 30분 등원(3시 40분 수업)',
@@ -520,16 +360,13 @@ function filterStudents() {
 
 // 초기화
 document.addEventListener('DOMContentLoaded', () => {
-    renderStudents();
-    renderDayStudents();
-    renderScheduleChanges();
-    renderWithdrawals();
-    
     // 폼 제출 이벤트 리스너 등록
     document.getElementById('addStudentForm').addEventListener('submit', handleAddStudent);
-    document.getElementById('scheduleChangeForm').addEventListener('submit', handleAddScheduleChange);
     document.getElementById('editStudentForm').addEventListener('submit', handleEditStudent);
-    document.getElementById('withdrawalForm').addEventListener('submit', handleWithdrawal);
+    
+    // 초기 데이터 렌더링
+    renderStudents();
+    renderDayStudents();
     
     // 초기 탭 설정
     showTab('timeTable');
