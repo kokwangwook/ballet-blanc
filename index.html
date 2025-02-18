@@ -26,10 +26,7 @@
             <!-- 탭 영역 -->
             <div class="mb-6">
                 <div class="flex border-b border-gray-200">
-                    <button onclick="showTab('dashboard')" class="tab-button active px-4 py-2" data-tab="dashboard">
-                        대시보드
-                    </button>
-                    <button onclick="showTab('timeTable')" class="tab-button px-4 py-2" data-tab="timeTable">
+                    <button onclick="showTab('timeTable')" class="tab-button active px-4 py-2" data-tab="timeTable">
                         시간대별
                     </button>
                     <button onclick="showTab('dayTable')" class="tab-button px-4 py-2" data-tab="dayTable">
@@ -47,72 +44,8 @@
                 </div>
             </div>
 
-            <!-- 대시보드 영역 -->
-            <div id="dashboard" class="tab-content active">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <!-- 전체 학생 수 카드 -->
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <h3 class="text-blue-600 text-lg font-semibold mb-2">전체 학생</h3>
-                        <p class="text-3xl font-bold text-blue-800" id="totalStudentsCount">0</p>
-                    </div>
-                    <!-- 오늘 등원 예정 학생 수 카드 -->
-                    <div class="bg-green-50 p-4 rounded-lg">
-                        <h3 class="text-green-600 text-lg font-semibold mb-2">오늘 등원 예정</h3>
-                        <p class="text-3xl font-bold text-green-800" id="todayStudentsCount">0</p>
-                    </div>
-                    <!-- 일정 변경 건수 카드 -->
-                    <div class="bg-yellow-50 p-4 rounded-lg">
-                        <h3 class="text-yellow-600 text-lg font-semibold mb-2">이번 주 일정 변경</h3>
-                        <p class="text-3xl font-bold text-yellow-800" id="scheduleChangesCount">0</p>
-                    </div>
-                    <!-- 퇴원 예정 학생 수 카드 -->
-                    <div class="bg-red-50 p-4 rounded-lg">
-                        <h3 class="text-red-600 text-lg font-semibold mb-2">이번 달 퇴원 예정</h3>
-                        <p class="text-3xl font-bold text-red-800" id="withdrawalCount">0</p>
-                    </div>
-                </div>
-
-                <!-- 오늘의 운행 일정 -->
-                <div class="bg-white rounded-lg shadow mb-6">
-                    <div class="p-4 border-b">
-                        <h3 class="text-lg font-semibold">오늘의 운행 일정</h3>
-                    </div>
-                    <div class="p-4">
-                        <div id="todaySchedule" class="space-y-4">
-                            <!-- 시간대별 운행 정보가 여기에 동적으로 추가됩니다 -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 최근 변경 사항 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- 최근 일정 변경 -->
-                    <div class="bg-white rounded-lg shadow">
-                        <div class="p-4 border-b">
-                            <h3 class="text-lg font-semibold">최근 일정 변경</h3>
-                        </div>
-                        <div class="p-4">
-                            <div id="recentScheduleChanges" class="space-y-2">
-                                <!-- 최근 일정 변경 내역이 여기에 동적으로 추가됩니다 -->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 최근 등록된 학생 -->
-                    <div class="bg-white rounded-lg shadow">
-                        <div class="p-4 border-b">
-                            <h3 class="text-lg font-semibold">최근 등록된 학생</h3>
-                        </div>
-                        <div class="p-4">
-                            <div id="recentStudents" class="space-y-2">
-                                <!-- 최근 등록된 학생 목록이 여기에 동적으로 추가됩니다 -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 기존 콘텐츠 영역 -->
-            <div id="timeTable" class="tab-content">
+            <!-- 콘텐츠 영역 -->
+            <div id="timeTable" class="tab-content active">
                 <div id="studentsList"></div>
             </div>
 
@@ -212,6 +145,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-1">학생</label>
                     <select name="studentId" class="w-full p-2 border rounded" required>
+                        <!-- JavaScript로 동적 생성됨 -->
                     </select>
                 </div>
                 <div class="mb-4">
@@ -269,81 +203,80 @@
                         <option value="14:30">2시 30분 등원(3시 40분 수업)</option>
                         <option value="15:30">3시 30분 등원(4시 40분 수업)</option>
                         <option value="16:50">4시 50분 하원, 등원(5시 40분 수업)</option>
-                        <option value="17:40">5시 40분 하원, 등원(6
-                                <option value="17:40">5시 40분 하원, 등원(6시 40분 수업)</option>
-                                <option value="18:40">6시 40분 하원</option>
-                                <option value="19:40">7시 40분 하원</option>
-                            </select>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium mb-1">등원 요일</label>
-                            <div class="flex gap-2">
-                                <label class="flex items-center">
-                                    <input type="checkbox" name="days" value="월">
-                                    <span class="ml-1">월</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" name="days" value="화">
-                                    <span class="ml-1">화</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" name="days" value="수">
-                                    <span class="ml-1">수</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" name="days" value="목">
-                                    <span class="ml-1">목</span>
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" name="days" value="금">
-                                    <span class="ml-1">금</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="flex justify-end gap-2">
-                            <button type="button" onclick="deleteStudent()" class="px-4 py-2 bg-red-500 text-white rounded">
-                                삭제
-                            </button>
-                            <button type="button" onclick="showWithdrawalModal(${studentId})" class="px-4 py-2 bg-yellow-500 text-white rounded">
-                                퇴원
-                            </button>
-                            <button type="button" onclick="hideModal('editStudentModal')" class="px-4 py-2 border rounded">
-                                취소
-                            </button>
-                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">
-                                수정
-                            </button>
-                        </div>
-                    </form>
+                        <option value="17:40">5시 40분 하원, 등원(6시 40분 수업)</option>
+                        <option value="18:40">6시 40분 하원</option>
+                        <option value="19:40">7시 40분 하원</option>
+                    </select>
                 </div>
-            </div>
-        
-            <!-- 퇴원 처리 모달 -->
-            <div id="withdrawalModal" class="modal">
-                <div class="modal-content">
-                    <h2 class="text-xl font-bold mb-4">퇴원 처리</h2>
-                    <form id="withdrawalForm">
-                        <input type="hidden" name="studentId">
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium mb-1">퇴원 사유</label>
-                            <input type="text" name="reason" class="w-full p-2 border rounded" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium mb-1">퇴원 일자</label>
-                            <input type="date" name="date" class="w-full p-2 border rounded" required>
-                        </div>
-                        <div class="flex justify-end gap-2">
-                            <button type="button" onclick="hideModal('withdrawalModal')" class="px-4 py-2 border rounded">
-                                취소
-                            </button>
-                            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded">
-                                퇴원 처리
-                            </button>
-                        </div>
-                    </form>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">등원 요일</label>
+                    <div class="flex gap-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="days" value="월">
+                            <span class="ml-1">월</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="days" value="화">
+                            <span class="ml-1">화</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="days" value="수">
+                            <span class="ml-1">수</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="days" value="목">
+                            <span class="ml-1">목</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="days" value="금">
+                            <span class="ml-1">금</span>
+                        </label>
+                    </div>
                 </div>
-            </div>
-        
-            <script type="module" src="js/script.js"></script>
-        </body>
-        </html>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="deleteStudent()" class="px-4 py-2 bg-red-500 text-white rounded">
+                        삭제
+                    </button>
+                    <button type="button" onclick="showWithdrawalModal()" class="px-4 py-2 bg-yellow-500 text-white rounded">
+                        퇴원
+                    </button>
+                    <button type="button" onclick="hideModal('editStudentModal')" class="px-4 py-2 border rounded">
+                        취소
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">
+                        수정
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 퇴원 처리 모달 -->
+    <div id="withdrawalModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold mb-4">퇴원 처리</h2>
+            <form id="withdrawalForm">
+                <input type="hidden" name="studentId">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">퇴원 사유</label>
+                    <input type="text" name="reason" class="w-full p-2 border rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">퇴원 일자</label>
+                    <input type="date" name="date" class="w-full p-2 border rounded" required>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="hideModal('withdrawalModal')" class="px-4 py-2 border rounded">
+                        취소
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded">
+                        퇴원 처리
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
