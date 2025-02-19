@@ -589,3 +589,56 @@ function loadData() {
 
 // 초기 데이터 로드
 loadData();
+
+// 학생 데이터 관리 (localStorage 사용)
+function saveData() {
+    localStorage.setItem('ballet-students', JSON.stringify(students));
+    localStorage.setItem('ballet-schedules', JSON.stringify(scheduleChanges));
+    localStorage.setItem('ballet-withdrawals', JSON.stringify(withdrawals));
+}
+
+function loadData() {
+    const savedStudents = localStorage.getItem('ballet-students');
+    const savedSchedules = localStorage.getItem('ballet-schedules');
+    const savedWithdrawals = localStorage.getItem('ballet-withdrawals');
+
+    if (savedStudents) students = JSON.parse(savedStudents);
+    if (savedSchedules) scheduleChanges = JSON.parse(savedSchedules);
+    if (savedWithdrawals) withdrawals = JSON.parse(savedWithdrawals);
+}
+
+// 데이터 변경 시마다 자동 저장
+function wrapWithSave(func) {
+    return function(...args) {
+        const result = func.apply(this, args);
+        saveData();
+        return result;
+    };
+}
+
+// 데이터 수정 함수들에 자동 저장 기능 추가
+addStudent = wrapWithSave(addStudent);
+updateStudent = wrapWithSave(updateStudent);
+deleteStudent = wrapWithSave(deleteStudent);
+addWithdrawal = wrapWithSave(addWithdrawal);
+restoreStudent = wrapWithSave(restoreStudent);
+addScheduleChange = wrapWithSave(addScheduleChange);
+deleteScheduleChange = wrapWithSave(deleteScheduleChange);
+
+// 페이지 로드 시 데이터 불러오기
+document.addEventListener('DOMContentLoaded', () => {
+    loadData();
+    renderStudents();
+    renderDayStudents();
+    renderScheduleChanges();
+    renderWithdrawals();
+    
+    // 폼 이벤트 리스너 등록
+    document.getElementById('addStudentForm').addEventListener('submit', handleAddStudent);
+    document.getElementById('scheduleChangeForm').addEventListener('submit', handleScheduleChange);
+    document.getElementById('editStudentForm').addEventListener('submit', handleEditStudent);
+    document.getElementById('withdrawalForm').addEventListener('submit', handleWithdrawal);
+    
+    // 초기 탭 설정
+    showTab('timeTable');
+});
