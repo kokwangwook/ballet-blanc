@@ -8,4 +8,21 @@ function doGet(request) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-// 나머지 Google Apps Script 코드를 여기에 붙여넣으세요.
+// 요청 처리 핸들러
+function handleRequest(request) {
+  var action = request && request.parameter ? request.parameter.action : null;
+  
+  if (action == 'getStudents') {
+    return getStudents();
+  } else if (action == 'addStudent') {
+    var data = JSON.parse(request.parameter.data);
+    return addStudent(data);
+  } else if (action == 'updateStudent') {
+    var data = JSON.parse(request.parameter.data);
+    return updateStudent(data);
+  } 
+  // 나머지 코드 생략...
+  
+  // 기본적으로 학생 데이터 반환 (action이 없을 경우)
+  return getStudents();
+}
