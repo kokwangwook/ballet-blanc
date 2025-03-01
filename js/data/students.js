@@ -1,4 +1,5 @@
-const students = [
+// 로컬 스토리지에서 데이터 불러오기 (없으면 기본 데이터 사용)
+const defaultStudents = [
     // 2시 30분 등원(3시 40분 수업)
     {
         id: 1,
@@ -350,18 +351,27 @@ const students = [
     }
 ];
 
+// 로컬 스토리지에서 데이터를 가져오거나 기본 데이터 사용
+let students = JSON.parse(localStorage.getItem('ballet-blanc-students')) || defaultStudents;
+
 // 데이터 변경 함수들
 export function addStudent(student) {
-    students.push({
+    const newStudent = {
         id: Date.now(),
         ...student
-    });
+    };
+    students.push(newStudent);
+    // 로컬 스토리지에 저장
+    localStorage.setItem('ballet-blanc-students', JSON.stringify(students));
+    return newStudent;
 }
 
 export function updateStudent(updatedStudent) {
     const index = students.findIndex(s => s.id === updatedStudent.id);
     if (index !== -1) {
         students[index] = updatedStudent;
+        // 로컬 스토리지에 저장
+        localStorage.setItem('ballet-blanc-students', JSON.stringify(students));
     }
 }
 
@@ -369,6 +379,8 @@ export function deleteStudent(studentId) {
     const index = students.findIndex(s => s.id === studentId);
     if (index !== -1) {
         students.splice(index, 1);
+        // 로컬 스토리지에 저장
+        localStorage.setItem('ballet-blanc-students', JSON.stringify(students));
     }
 }
 
